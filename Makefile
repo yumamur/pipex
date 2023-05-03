@@ -11,7 +11,7 @@ SRC			= $(wildcard ./src/mandatory/*)
 SRC_BONUS	= $(wildcard ./src/bonus/*)
 
 $(NAME): $(LIBFT) $(SRC)
-	$(CC) $(CFLAGS) -I$(LIBFT_DIR)/include -I./include $(SRC) $(LIBFT) -o $(NAME)
+	@$(CC) $(CFLAGS) -I$(LIBFT_DIR)/include -I./include $(SRC) $(LIBFT) -o $(NAME)
 
 $(LIBFT):
 	@make -sC $(LIBFT_DIR)
