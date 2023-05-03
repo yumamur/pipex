@@ -6,11 +6,11 @@
 /*   By: yumamur <yumamur@student.42istanbul.com.t  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 23:10:28 by yumamur           #+#    #+#             */
-/*   Updated: 2023/05/02 14:58:58 by yumamur          ###   ########.fr       */
+/*   Updated: 2023/05/03 15:17:34 by yumamur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/pipex.h"
+#include "pipex.h"
 
 void	handle_error(char errmsg[])
 {
@@ -42,19 +42,20 @@ const char	*get_path(char *cmd, char *envp[])
 {
 	char	**allpaths;
 	char	*ret;
+	int		i;
 
 	allpaths = ft_split(ft_getenv((const char **)envp, "PATH"), ':');
+	i = 0;
 	add_cmd(allpaths, cmd);
-	ret = *allpaths;
-	while (ret)
+	while (allpaths[i])
 	{
-		if (access((const char *)ret, F_OK))
+		if (!access((const char *)(allpaths[i]), F_OK))
 		{
-			ret = ft_strdup(ret);
+			ret = ft_strdup(allpaths[i]);
 			ft_freesplit(allpaths);
 			return ((const char *)ret);
 		}
-		ret++;
+		i++;
 	}
 	return (NULL);
 }

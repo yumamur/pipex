@@ -6,12 +6,11 @@
 /*   By: yumamur <yumamur@student.42istanbul.com.t  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 23:10:18 by yumamur           #+#    #+#             */
-/*   Updated: 2023/05/02 11:34:13 by yumamur          ###   ########.fr       */
+/*   Updated: 2023/05/03 15:17:21 by yumamur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/pipex.h"
-#include <stdio.h>
+#include "pipex.h"
 
 void	exec(char cmd[], char *envp[])
 {
@@ -45,7 +44,7 @@ void	parent(char *argv[], char *envp[], int fds[])
 {
 	int	fd;
 
-	fd = open(argv[4], O_CREAT | O_RDWR | O_TRUNC);
+	fd = open(argv[4], O_TRUNC | O_CREAT | O_WRONLY, 0644);
 	if (fd < 0)
 		handle_error("Invalid outfile");
 	dup2(fd, 1);
