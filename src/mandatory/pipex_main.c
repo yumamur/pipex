@@ -17,14 +17,25 @@ void	exec(char cmd[], char *envp[])
 	char	**argcmd;
 
 	argcmd = ft_split(cmd, 32);
-	if (execve(get_path(argcmd[0], envp), argcmd, envp) == -1)
+	if (!access(argcmd[0], X_OK))
 	{
-		write(2, "Could not execute command ", 26);
-		ft_freesplit(argcmd);
-		handle_error(cmd);
+		clear_path(argcmd);
+		if (execve(get_path(argcmd[0], envp), argcmd, envp) == -1)
+		{
+			write(2, argcmd[0], ft_strlen(argcmd[0]));
+			write(2, ": command not found\n", 20);
+			ft_freesplit(argcmd);
+			handle_error("\1");
+		}
 	}
-	else
+	else if (execve(get_path(argcmd[0], envp), argcmd, envp) == -1)
+	{
+		write(2, argcmd[0], ft_strlen(argcmd[0]));
+		write(2, ": command not found\n", 20);
 		ft_freesplit(argcmd);
+		handle_error("\1");
+	}
+	ft_freesplit(argcmd);
 }
 
 void	child(char *argv[], char *envp[], int fds[])

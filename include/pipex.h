@@ -21,5 +21,6 @@
 
 void		handle_error(char str[]);
 const char	*get_path(char *cmd, char *envp[]);
+void		clear_path(char *argcmd[]);
 
 #endif

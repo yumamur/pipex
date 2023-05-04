@@ -12,10 +12,22 @@
 
 #include "pipex.h"
 
+void	clear_path(char *argcmd[])
+{
+	char	*tmp;
+
+	tmp = ft_strdup(ft_strrchr(argcmd[0], '/') + 1);
+	free(argcmd[0]);
+	argcmd[0] = ft_strdup(tmp);
+	free(tmp);
+}
+
 void	handle_error(char errmsg[])
 {
 	if (!errmsg)
 		write(2, "Error: Invalid argument count", 29);
+	else if (errmsg[0] == 1)
+		;
 	else
 		perror(errmsg);
 	exit(1);
