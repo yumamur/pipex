@@ -30,7 +30,7 @@ void	handle_error(char errmsg[])
 		;
 	else
 		perror(errmsg);
-	exit(1);
+	exit(127);
 }
 
 void	add_cmd(char *allpaths[], char *cmd)
