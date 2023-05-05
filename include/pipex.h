@@ -13,12 +13,13 @@
 #ifndef PIPEX_H
 # define PIPEX_H
 
-# include "libft.h"
+# include "../src/libft/include/libft.h"
 # include <fcntl.h>
 # include <stdio.h>
 # include <string.h>
 # include <errno.h>
 
+int			open_fd(char *file, int flags, unsigned int mode);
 void		handle_error(char str[]);
 const char	*get_path(char *cmd, char *envp[]);
 void		clear_path(char *argcmd[]);
