@@ -6,52 +6,50 @@
 /*   By: yumamur <yumamur@student.42istanbul.com.t  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 23:10:28 by yumamur           #+#    #+#             */
-/*   Updated: 2023/05/03 15:17:34 by yumamur          ###   ########.fr       */
+/*   Updated: 2023/05/06 00:04:04 by yumamur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/pipex.h"
 
-int	open_fd(char *file, int flags, unsigned int mode)
+void	exec(char cmd[], char *envp[])
 {
-	int	ret;
+	char	**argcmd;
 
-	ret = open((const char *)file, flags, mode);
-	if (ret == -1)
+	argcmd = ft_split(cmd, 32);
+	if (!access(argcmd[0], X_OK))
 	{
-		write(2, "Could not open file ", 20);
-		handle_error(file);
+		ft_free_change(argcmd[0], ft_file_name((argcmd[0])));
+		if (execve(get_path(argcmd[0], envp), argcmd, envp) == -1)
+		{
+			write(2, argcmd[0], ft_strlen(argcmd[0]));
+			write(2, ": command not found\n", 20);
+			ft_free_2pt(argcmd);
+			handle_error("\1");
+		}
 	}
-	return (ret);
-}
-
-void	clear_path(char **argcmd)
-{
-	char	*tmp;
-
-	tmp = ft_strdup(ft_strrchr(argcmd[0], '/') + 1);
-	free(argcmd[0]);
-	argcmd[0] = ft_strdup(tmp);
-	free(tmp);
+	else if (execve(get_path(argcmd[0], envp), argcmd, envp) == -1)
+	{
+		write(2, argcmd[0], ft_strlen(argcmd[0]));
+		write(2, ": command not found\n", 20);
+		ft_free_2pt(argcmd);
+		handle_error("\1");
+	}
+	ft_free_2pt(argcmd);
 }
 
 void	handle_error(char errmsg[])
 {
-	if (errmsg[0] == 5)
-		write(2, "Insufficent argument. Required: \033[31;1m4\033[m", 46);
-	else if (errmsg[0] == 6)
-	{
-		write(2, "Insufficent argument for 'here_doc'.", 36);
-		write(2, "Required: \033[31;1m5\033[m", 21);
-	}
+	if (!errmsg)
+		write(2, "Error: Invalid argument count", 29);
 	else if (errmsg[0] == 1)
-		write(2, ": command not found\n", 20);
+		;
 	else
 		perror(errmsg);
 	exit(127);
 }
 
-static void	add_cmd(char *allpaths[], char *cmd)
+void	add_cmd(char *allpaths[], char *cmd)
 {
 	char	*tmp1;
 	char	*tmp2;
@@ -82,7 +80,7 @@ const char	*get_path(char *cmd, char *envp[])
 		if (!access((const char *)(allpaths[i]), F_OK))
 		{
 			ret = ft_strdup(allpaths[i]);
-			ft_freesplit(allpaths);
+			ft_free_2pt(allpaths);
 			return ((const char *)ret);
 		}
 		i++;

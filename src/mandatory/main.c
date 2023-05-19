@@ -6,37 +6,11 @@
 /*   By: yumamur <yumamur@student.42istanbul.com.t  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 23:10:18 by yumamur           #+#    #+#             */
-/*   Updated: 2023/05/03 15:17:21 by yumamur          ###   ########.fr       */
+/*   Updated: 2023/05/06 00:03:52 by yumamur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
-
-void	exec(char cmd[], char *envp[])
-{
-	char	**argcmd;
-
-	argcmd = ft_split(cmd, 32);
-	if (!access(argcmd[0], X_OK))
-	{
-		clear_path(argcmd);
-		if (execve(get_path(argcmd[0], envp), argcmd, envp) == -1)
-		{
-			write(2, argcmd[0], ft_strlen(argcmd[0]));
-			write(2, ": command not found\n", 20);
-			ft_freesplit(argcmd);
-			handle_error("\1");
-		}
-	}
-	else if (execve(get_path(argcmd[0], envp), argcmd, envp) == -1)
-	{
-		write(2, argcmd[0], ft_strlen(argcmd[0]));
-		write(2, ": command not found\n", 20);
-		ft_freesplit(argcmd);
-		handle_error("\1");
-	}
-	ft_freesplit(argcmd);
-}
+#include "../../include/pipex.h"
 
 void	child(char *argv[], char *envp[], int fds[])
 {

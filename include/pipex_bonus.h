@@ -10,19 +10,29 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PIPEX_H
-# define PIPEX_H
+#ifndef PIPEX_BONUS_H
+# define PIPEX_BONUS_H
 
-# include "libft.h"
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 25
+# endif
+
 # include "shellft.h"
 # include <fcntl.h>
 # include <stdio.h>
 # include <string.h>
 # include <errno.h>
+# include <sys/wait.h>
 
-int			open_fd(char *file, int flags, unsigned int mode);
+int			main(int argc, char *argv[], const char *envp[]);
+void		pipe_main(int argc, char *argv[], const char *envp[]);
+void		exec(char cmd[], const char *envp[]);
+int			open_fd(char *file, int flags, unsigned int mode, int offset);
 void		handle_error(char str[]);
-const char	*get_path(char *cmd, char *envp[]);
-void		exec(char cmd[], char *envp[]);
+const char	*get_path(char *cmd, const char *envp[]);
+
+void		heredoc(int fds[], char *argv[], const char *envp[]);
+void		heredoc_exec(const char *envp[]);
+char		*get_next_line(int fd);
 
 #endif

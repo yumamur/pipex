@@ -1,4 +1,5 @@
-NAME = pipex
+NAME	= pipex
+TITLE	= \033[38;2;180;30;80;1m[PIPEX]\033[m
 
 RM		= /bin/rm
 CC		= /bin/clang
@@ -6,22 +7,30 @@ CFLAGS	= -Wall -Werror -Wextra
 
 LIBFT_DIR	= ./src/libft
 LIBFT		= $(LIBFT_DIR)/libft.a
+libft_make	= make -sC $(LIBFT_DIR)
 
-SRC			= $(wildcard ./src/mandatory/*)
-SRC_BONUS	= $(wildcard ./src/bonus/*)
+SRC			= $(wildcard ./src/mandatory/*.c)
+SRC_BONUS	= $(wildcard ./src/bonus/*.c)
 
-$(NAME): $(LIBFT) $(SRC)
-	@$(CC) $(CFLAGS) -I$(LIBFT_DIR)/include -I./include $(SRC) $(LIBFT) -o $(NAME)
-
-$(LIBFT):
-	@make -sC $(LIBFT_DIR)
+$(NAME): $(SRC)
+	@printf "$(TITLE) \033[1mMandatory\033[m\n"
+	@printf "$(TITLE) Building 'libft.a'\n"
+	@$(call $(libft_make))
+	@printf "$(TITLE) Building '$(NAME)'\n"
+	@$(CC) $(CFLAGS) -I./include $(SRC) $(LIBFT) -o $(NAME)
+	@printf "$(TITLE) Successful\n"
 
 .PHONY: all bonus clean fclean re
 
 all: $(NAME)
 
-# bonus: $(LIBFT) $(SRC)
-#	@$(CC) $(CFLAGS) $(SRC_BONUS) $(LIBFT) -o $(NAME) 
+bonus: $(SRC_BONUS)
+	@printf "$(TITLE) \033[1mBonus\033[m\n"
+	@printf "$(TITLE) Building 'libft.a'\n"
+	@make -sC $(LIBFT_DIR)
+	@printf "$(TITLE) Building '$(NAME)'\n"
+	@$(CC) $(CFLAGS) $(SRC_BONUS) $(LIBFT) -o $(NAME) 
+	@printf "$(TITLE) Successful\n"
 
 clean:
 	@if [ -e $(NAME) ]; then \
