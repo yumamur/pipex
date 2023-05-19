@@ -19,9 +19,15 @@ typedef struct	s_quote
 {
 	const char		*start;
 	const char		*end;
-	const char		*text;
-	struct s_quote	*next;
 }	t_quote;
+
+typedef struct	s_cmdsub
+{
+	const char		*start;
+	const char		*end;
+	char			*mark;
+	struct s_quote	qt;
+}	t_cmdsub;
 
 char		*ft_file_name(char *path);
 const char	*ft_getenv(const char *envp[], const char *name);
