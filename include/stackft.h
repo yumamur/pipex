@@ -21,18 +21,18 @@
 
 typedef struct s_stack
 {
-	const char				*data;
-	const unsigned int		size;
-	const unsigned int		cap;
-	const unsigned long int	index;
-	const unsigned long		_type;
+	t_c_char	*data;
+	t_c_uint	size;
+	t_c_uint	cap;
+	t_c_ulint	index;
+	t_c_ulong	_type;
 }	t_stack;
 # endif /* _STRUCT_STACK */
 
 /* It is recommended to set _type parameter using 'sizeof()' macro.
  * */
-void	ft_stack_init(t_stack *pt, unsigned int cap, unsigned long _type);
-void	ft_stack_xpanda(t_stack *pt_stack, unsigned int n);
+void	ft_stack_init(t_stack *pt, t_uint cap, t_ulong _type);
+void	ft_stack_xpanda(t_stack *pt_stack, t_uint n);
 void	ft_stack_push(t_stack *pt_stack, void *val);
 void	*ft_stack_pop(t_stack *pt_stack);
 void	ft_stack_clear(t_stack *pt_stack);
