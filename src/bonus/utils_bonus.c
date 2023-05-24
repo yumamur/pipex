@@ -55,7 +55,7 @@ void	handle_error(char errmsg[])
 		write(2, "Insufficent argument. Required: \033[31;1m4\033[m", 44);
 	else if (errmsg[0] == 6)
 	{
-		write(2, "Insufficent argument for 'here_doc'.", 36);
+		write(2, "Insufficent argument for 'heredoc'.", 36);
 		write(2, "Required: \033[31;1m5\033[m", 21);
 	}
 	else if (errmsg[0] == 1)

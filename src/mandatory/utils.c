@@ -12,38 +12,43 @@
 
 #include "../../include/pipex.h"
 
-void	exec(char cmd[], char *envp[])
+void	if_exec(t_c_char *path, char **argcmd, char **envp)
 {
-	char	**argcmd;
+	if (execve(path, argcmd, envp) == -1)
+	{
+		write(2, argcmd[0], ft_strlen(argcmd[0]));
+		ft_free_2pt(argcmd);
+		free((void *)path);
+		handle_error("\1");
+	}
+}
+
+void	exec(char *cmd, char *envp[])
+{
+	char		**argcmd;
+	t_c_char	*path;
 
 	argcmd = ft_split(cmd, 32);
+	if (!argcmd)
+		return ;
+	path = get_path(argcmd[0], envp);
 	if (!access(argcmd[0], X_OK))
 	{
 		ft_free_change(argcmd[0], ft_file_name((argcmd[0])));
-		if (execve(get_path(argcmd[0], envp), argcmd, envp) == -1)
-		{
-			write(2, argcmd[0], ft_strlen(argcmd[0]));
-			write(2, ": command not found\n", 20);
-			ft_free_2pt(argcmd);
-			handle_error("\1");
-		}
+		if_exec(path, argcmd, envp);
 	}
-	else if (execve(get_path(argcmd[0], envp), argcmd, envp) == -1)
-	{
-		write(2, argcmd[0], ft_strlen(argcmd[0]));
-		write(2, ": command not found\n", 20);
-		ft_free_2pt(argcmd);
-		handle_error("\1");
-	}
+	else
+		if_exec(path, argcmd, envp);
 	ft_free_2pt(argcmd);
+	free((void *)path);
 }
 
 void	handle_error(char errmsg[])
 {
-	if (!errmsg)
-		write(2, "Error: Invalid argument count", 29);
+	if (errmsg[0] == 5)
+		write(2, "Insufficent argument. Required: \033[31;1m4\033[m", 44);
 	else if (errmsg[0] == 1)
-		;
+		write(2, ": command not found\n", 20);
 	else
 		perror(errmsg);
 	exit(127);
@@ -56,8 +61,8 @@ void	add_cmd(char *allpaths[], char *cmd)
 
 	while (*allpaths)
 	{
-		tmp1 = ft_strjoin(*(const char **)allpaths, "/");
-		tmp2 = ft_strjoin((const char *)tmp1, (const char *)cmd);
+		tmp1 = ft_strjoin(*(t_c_char **)allpaths, "/");
+		tmp2 = ft_strjoin((t_c_char *)tmp1, (t_c_char *)cmd);
 		free(tmp1);
 		free(*allpaths);
 		*allpaths = tmp2;
@@ -66,22 +71,22 @@ void	add_cmd(char *allpaths[], char *cmd)
 	}
 }
 
-const char	*get_path(char *cmd, char *envp[])
+t_c_char	*get_path(char *cmd, char *envp[])
 {
 	char	**allpaths;
 	char	*ret;
 	int		i;
 
-	allpaths = ft_split(ft_getenv((const char **)envp, "PATH"), ':');
+	allpaths = ft_split(ft_getenv((t_c_char **)envp, "PATH"), ':');
 	i = 0;
 	add_cmd(allpaths, cmd);
 	while (allpaths[i])
 	{
-		if (!access((const char *)(allpaths[i]), F_OK))
+		if (!access((t_c_char *)(allpaths[i]), F_OK))
 		{
 			ret = ft_strdup(allpaths[i]);
 			ft_free_2pt(allpaths);
-			return ((const char *)ret);
+			return ((t_c_char *)ret);
 		}
 		i++;
 	}

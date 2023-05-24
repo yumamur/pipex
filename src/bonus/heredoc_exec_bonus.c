@@ -9,6 +9,7 @@
 /*   Updated: 2023/05/08 18:12:25 by yumamur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "../../include/pipex_bonus.h"
 
 static void	heredoc_parse(t_c_char *buf, int f_size, char *envp[])
@@ -23,20 +24,21 @@ static void	heredoc_parse(t_c_char *buf, int f_size, char *envp[])
 	sub = malloc(32);
 	sub[0] = ft_strdup("sh");
 	sub[1] = ft_strdup("-c");
-	sub[2] = ft_strdup("echo ");
 	sub[3] = NULL;
 	while (i < f_size)
+	{
 		if (buf[i] == '$' && buf[i + 1] != '(')
 			i += ft_shell_var(fd, &(buf[i]), (t_c_char **)envp);
-	else if (buf[i] == '$' && buf[i + 1] == '(')
-	{
-		sub[2] = ft_strjoin_to_s1(sub[2], (char *)ft_shell_cmdsub(&(buf[i])));
-		exec(NULL, envp, sub);
-		i += ft_strlen(sub[3]);
-		free((void *)sub);
+		else if (buf[i] == '$' && buf[i + 1] == '(')
+		{
+			sub[2] = ft_strjoin("echo ", (char *)ft_shell_cmdsub(&(buf[i])));
+			exec(NULL, envp, sub);
+			i += ft_strlen(sub[3]);
+			free((void *)sub);
+		}
+		else
+			write(fd, &(buf[i++]), 1);
 	}
-	else
-		write(fd, &(buf[i++]), 1);
 }
 
 void	pipe_main(int argc, char *argv[], char *envp[])
