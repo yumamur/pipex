@@ -12,7 +12,28 @@
 
 #include "../../include/pipex_bonus.h"
 
-void	pipe_heredoc(char *argv[], const char *envp[])
+void	exec(char *cmd, char *envp[], char **sub)
+{
+	char		**argcmd;
+	t_c_char	*path;
+
+	if (sub)
+		argcmd = sub;
+	else
+		argcmd = ft_split(cmd, 32);
+	path = get_path(argcmd[0], envp);
+	if (!access(argcmd[0], X_OK))
+	{
+		ft_free_change(argcmd[0], ft_file_name((argcmd[0])));
+		if_exec(path, argcmd, envp);
+	}
+	else
+		if_exec(path, argcmd, envp);
+	ft_free_2pt(argcmd);
+	free((void *)path);
+}
+
+void	pipe_heredoc(char *argv[], char *envp[])
 {
 	int	fds[2];
 	int	pid;
@@ -32,7 +53,7 @@ void	pipe_heredoc(char *argv[], const char *envp[])
 	}
 }
 
-void	pipe_cmd(char *cmd, const char *envp[])
+void	pipe_cmd(char *cmd, char *envp[])
 {
 	int	fds[2];
 	int	pid;
@@ -46,7 +67,7 @@ void	pipe_cmd(char *cmd, const char *envp[])
 	{
 		close(fds[0]);
 		dup2(fds[1], STDOUT_FILENO);
-		exec(cmd, envp);
+		exec(cmd, envp, NULL);
 	}
 	else
 	{
@@ -55,7 +76,7 @@ void	pipe_cmd(char *cmd, const char *envp[])
 	}
 }
 
-int	main(int argc, char *argv[], const char *envp[])
+int	main(int argc, char *argv[], char *envp[])
 {
 	int	fds[2];
 	int	c;
@@ -80,5 +101,5 @@ int	main(int argc, char *argv[], const char *envp[])
 	while (c < argc - 2)
 		pipe_cmd(argv[c++], envp);
 	dup2(fds[1], STDOUT_FILENO);
-	exec(argv[argc - 2], envp);
+	exec(argv[argc - 2], envp, NULL);
 }

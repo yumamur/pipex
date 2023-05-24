@@ -38,7 +38,7 @@
 	}
 }
 */
-void	heredoc(int fds[], char *argv[], const char *envp[])
+void	heredoc(int fds[], char *argv[], char *envp[])
 {
 	int		hd_fd;
 	char	*str;

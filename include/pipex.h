@@ -20,7 +20,7 @@
 # include <string.h>
 # include <errno.h>
 
-int			open_fd(char *file, int flags, unsigned int mode);
+int			open_fd(char *file, int flags, t_uint mode);
 void		handle_error(char str[]);
 const char	*get_path(char *cmd, char *envp[]);
 void		exec(char cmd[], char *envp[]);

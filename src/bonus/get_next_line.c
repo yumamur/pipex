@@ -38,7 +38,7 @@ static char	*get_to_second_line(char *keep)
 	return (ret);
 }
 
-char	*get_first_line(const char *keep)
+char	*get_first_line(t_c_char *keep)
 {
 	int		i;
 	char	*ret;

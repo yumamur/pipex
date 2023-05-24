@@ -11,23 +11,35 @@
 /* ************************************************************************** */
 #include "../../include/pipex_bonus.h"
 
-static void	heredoc_parse(const char *buf, int f_size, const char *envp[])
+static void	heredoc_parse(t_c_char *buf, int f_size, char *envp[])
 {
-	int	i;
-	int	fd;
+	int		i;
+	int		fd;
+	char	**sub;
 
 	fd = open_fd(".tmpfile", O_RDWR | O_TRUNC, 0, 0);
+	dup2(fd, STDOUT_FILENO);
 	i = 0;
+	sub = malloc(32);
+	sub[0] = ft_strdup("sh");
+	sub[1] = ft_strdup("-c");
+	sub[2] = ft_strdup("echo ");
+	sub[3] = NULL;
 	while (i < f_size)
 		if (buf[i] == '$' && buf[i + 1] != '(')
-			i += ft_shell_var(fd, &(buf[i]), envp);
+			i += ft_shell_var(fd, &(buf[i]), (t_c_char **)envp);
 	else if (buf[i] == '$' && buf[i + 1] == '(')
-		i += ft_shell_cmdsub(fd, &(buf[i + 1]), envp) + 1;
+	{
+		sub[2] = ft_strjoin_to_s1(sub[2], (char *)ft_shell_cmdsub(&(buf[i])));
+		exec(NULL, envp, sub);
+		i += ft_strlen(sub[3]);
+		free((void *)sub);
+	}
 	else
 		write(fd, &(buf[i++]), 1);
 }
 
-void	pipe_main(int argc, char *argv[], const char *envp[])
+void	pipe_main(int argc, char *argv[], char *envp[])
 {
 	int	fds[2];
 	int	pid;
@@ -43,7 +55,7 @@ void	pipe_main(int argc, char *argv[], const char *envp[])
 		wait(NULL);
 }
 
-static int	filesize(const char *envp[])
+static int	filesize(char *envp[])
 {
 	char	buf[13];
 	char	**arg;
@@ -66,7 +78,7 @@ static int	filesize(const char *envp[])
 	return (fd);
 }
 
-void	heredoc_exec(const char *envp[])
+void	heredoc_exec(char *envp[])
 {
 	int		fd;
 	char	*buf;
