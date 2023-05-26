@@ -64,7 +64,8 @@ char	*ft_strdup(t_c_char *str);
 char	*ft_strndup(t_c_char *str, size_t n);
 char	*ft_strcdup(t_c_char *str, int c);
 char	*ft_strjoin(t_c_char *s1, t_c_char *s2);
-char	*ft_strjoin_to_s1(char *s1, t_c_char *s2);
+char	*ft_strjoin_frees1(char *s1, t_c_char *s2);
+char	*ft_strjoin_frees2(t_c_char *s1, char *s2);
 char	*ft_substr(t_c_char *str, t_uint start, size_t len);
 char	**ft_split(t_c_char *str, char c);
 

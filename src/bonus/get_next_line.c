@@ -82,7 +82,7 @@ char	*read_line(char *keep, int fd)
 			return (NULL);
 		}
 		concat[bytes_readed] = '\0';
-		keep = ft_strjoin_to_s1(keep, concat);
+		keep = ft_strjoin_frees1(keep, concat);
 	}
 	ft_free_pt(concat);
 	return (keep);

@@ -21,30 +21,33 @@ void	exec(char *cmd, char *envp[], char **sub)
 		argcmd = sub;
 	else
 		argcmd = ft_split(cmd, 32);
-	path = get_path(argcmd[0], envp);
 	if (!access(argcmd[0], X_OK))
 	{
+		path = ft_strdup(argcmd[0]);
 		ft_free_change(argcmd[0], ft_file_name((argcmd[0])));
 		if_exec(path, argcmd, envp);
 	}
 	else
+	{
+		path = get_path(argcmd[0], envp);
 		if_exec(path, argcmd, envp);
+	}
 	ft_free_2pt(argcmd);
 	free((void *)path);
 }
 
-void	pipe_heredoc(char *argv[], char *envp[])
+void	pipe_heredoc(char *argv[], char *envp[], t_uint cmd_ct)
 {
 	int	fds[2];
 	int	pid;
 
 	if (pipe(fds) == -1)
-		handle_error("Error piping heredoc");
+		handle_error("Error piping heredoc", 0);
 	pid = fork();
 	if (pid == -1)
-		handle_error("Error forking heredoc");
+		handle_error("Error forking heredoc", 0);
 	if (!pid)
-		heredoc(fds, argv, envp);
+		heredoc(fds, argv, envp, cmd_ct);
 	else
 	{
 		close(fds[1]);
@@ -59,10 +62,10 @@ void	pipe_cmd(char *cmd, char *envp[])
 	int	pid;
 
 	if (pipe(fds) == -1)
-		handle_error("Could not pipe");
+		handle_error("Could not pipe", 0);
 	pid = fork();
 	if (pid == -1)
-		handle_error("Could not fork");
+		handle_error("Could not fork", 0);
 	if (!pid)
 	{
 		close(fds[0]);
@@ -82,13 +85,13 @@ int	main(int argc, char *argv[], char *envp[])
 	int	c;
 
 	if (argc < 5)
-		handle_error("\5");
+		handle_error("\5", -1);
 	if (!ft_strcmp(argv[1], "here_doc"))
 	{
 		if (argc < 6)
-			handle_error("\6");
+			handle_error("\6", 0);
 		fds[1] = open_fd(argv[argc - 1], O_CREAT | O_RDWR | O_APPEND, 0644, 0);
-		pipe_heredoc(argv, envp);
+		pipe_heredoc(argv, envp, argc - 4);
 		c = 3;
 	}
 	else

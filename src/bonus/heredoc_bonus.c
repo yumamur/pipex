@@ -14,32 +14,39 @@
 
 static void	heredoc_out(int fds[])
 {
-	t_ulint	i;
-	int		hd_fd;	
-	char	str[100];
+	long int	i;
+	int			hd_fd;	
+	char		str[1];
 
-	hd_fd = open_fd(".tmpfile", O_RDONLY, 0644, 0);
+	hd_fd = open_fd(".tmpfile", O_RDONLY, 0, 0);
 	if (hd_fd == -1)
-		handle_error("Could not open heredoc file");
-	ft_memset(str, 0, 100);
+		handle_error("Could not open heredoc file", 0);
 	while (1)
 	{
-		i = read(hd_fd, str, 100);
-		if (i > 0)
-			write(fds[1], str, ft_strlen(str));
+		i = read(hd_fd, str, 1);
+		if (i == 1)
+			write(fds[1], str, 1);
 		else if (!i)
 			break ;
-		else if (i < 0)
+		else if (i == -1)
 		{
 			unlink(".tmpfile");
-			handle_error("heredoc output error");
+			handle_error("heredoc output error", 0);
 		}
 	}
 	close(hd_fd);
 	unlink(".tmpfile");
 }
 
-void	heredoc(int fds[], char *argv[], char *envp[])
+static void	write_prompt(t_uint cmd_ct)
+{
+	write(1, "heredoc", 7);
+	while (--cmd_ct)
+		write(1, " pipe", 5);
+	write(1, "> ", 2);
+}
+
+void	heredoc(int fds[], char *argv[], char *envp[], t_uint cmd_ct)
 {
 	int		hd_fd;
 	char	*str;
@@ -48,6 +55,7 @@ void	heredoc(int fds[], char *argv[], char *envp[])
 	hd_fd = open_fd(".tmpfile", O_CREAT | O_RDWR | O_TRUNC, 0644, 0);
 	while (1)
 	{
+		write_prompt(cmd_ct);
 		str = get_next_line(0);
 		if (!ft_strncmp(str, argv[2], ft_strlen(argv[2])))
 		{

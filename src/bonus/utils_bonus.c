@@ -19,7 +19,7 @@ void	if_exec(t_c_char *path, char **argcmd, char **envp)
 		write(2, argcmd[0], ft_strlen(argcmd[0]));
 		ft_free_2pt(argcmd);
 		free((void *)path);
-		handle_error("\1");
+		handle_error("\1", -1);
 	}
 }
 
@@ -32,7 +32,7 @@ int	open_fd(char *file, int flags, t_uint mode, int offset)
 	if (ret == -1)
 	{
 		write(2, "Could not open file ", 20);
-		handle_error(file);
+		handle_error(file, mode);
 	}
 	if (offset)
 	{
@@ -49,7 +49,7 @@ int	open_fd(char *file, int flags, t_uint mode, int offset)
 	return (ret);
 }
 
-void	handle_error(char errmsg[])
+void	handle_error(char errmsg[], t_uint mode)
 {
 	if (errmsg[0] == 5)
 		write(2, "Insufficent argument. Required: \033[31;1m4\033[m", 44);
@@ -60,6 +60,11 @@ void	handle_error(char errmsg[])
 	}
 	else if (errmsg[0] == 1)
 		write(2, ": command not found\n", 20);
+	else if (mode == O_RDONLY)
+	{
+		perror(errmsg);
+		exit(0);
+	}
 	else
 		perror(errmsg);
 	exit(127);

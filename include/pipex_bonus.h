@@ -24,15 +24,13 @@
 # include <errno.h>
 # include <sys/wait.h>
 
-int			main(int argc, char *argv[], char *envp[]);
-void		pipe_main(int argc, char *argv[], char *envp[]);
 void		exec(char cmd[], char *envp[], char **sub);
 void		if_exec(t_c_char *path, char **argcmd, char **envp);
 int			open_fd(char *file, int flags, t_uint mode, int offset);
-void		handle_error(char str[]);
+void		handle_error(char str[], t_uint mode);
 t_c_char	*get_path(char *cmd, char *envp[]);
 
-void		heredoc(int fds[], char *argv[], char *envp[]);
+void		heredoc(int fds[], char *argv[], char *envp[], t_uint cmd_ct);
 void		heredoc_exec(char *envp[]);
 char		*get_next_line(int fd);
 
