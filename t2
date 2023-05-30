@@ -1,2 +1,0 @@
-total 60 drwxr-xr-x 5 yusuf yusuf 4096 May 30 18:43 . drwxr-xr-x 4 yusuf yusuf 4096 May 30 17:21 .. drwxr-xr-x 9 yusuf yusuf 4096 May 30 18:08 .git -rw-r--r-- 1 yusuf yusuf 101 May 3 18:29 .gitmodules drwxr-xr-x 3 yusuf yusuf 4096 May 26 17:48 include -rw-r--r-- 1 yusuf yusuf 1177 May 24 17:15 Makefile -rwxr-xr-x 1 yusuf yusuf 32632 May 30 18:42 pipex drwxr-xr-x 5 yusuf yusuf 4096 May 8 17:23 src -rw-r--r-- 1 yusuf yusuf 0 May 30 18:43 t2 -rw-r--r-- 1 yusuf yusuf 0 May 30 18:43 .tmpfile
-1
