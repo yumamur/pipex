@@ -94,5 +94,5 @@ t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 /* UTILS */
 void	ft_free_pt(void *pt);
 void	ft_free_2pt(char **pt);
-void	ft_free_change(void *dest, void *src);
+void	ft_free_change(void **dest, void *src);
 #endif

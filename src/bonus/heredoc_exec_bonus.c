@@ -26,7 +26,8 @@ static int	exec_cmdsub(t_c_char *buf, char *envp[])
 	{
 		sub[0] = ft_strdup("sh");
 		sub[1] = ft_strdup("-c");
-		sub[2] = ft_strjoin_frees2("echo ", sub[2]);
+		ft_free_change((void **)&sub[2], ft_strtrim(sub[2], "$()"));
+		sub[2] = ft_strjoin_frees2("command ", sub[2]);
 		sub[3] = NULL;
 		exec(NULL, envp, sub);
 	}

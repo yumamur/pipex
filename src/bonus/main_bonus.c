@@ -24,7 +24,7 @@ void	exec(char *cmd, char *envp[], char **sub)
 	if (!access(argcmd[0], X_OK))
 	{
 		path = ft_strdup(argcmd[0]);
-		ft_free_change(argcmd[0], ft_file_name((argcmd[0])));
+		ft_free_change((void **)&argcmd[0], ft_file_name((argcmd[0])));
 		if_exec(path, argcmd, envp);
 	}
 	else
