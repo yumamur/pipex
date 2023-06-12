@@ -1,20 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   stackft.h                                          :+:      :+:    :+:   */
+/*   stackft_internal.h                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yumamur <yumamur@student.42istanbul.com.t  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/14 15:21:42 by yumamur           #+#    #+#             */
-/*   Updated: 2023/05/14 15:21:48 by yumamur          ###   ########.fr       */
+/*   Created: 2023/05/14 15:22:06 by yumamur           #+#    #+#             */
+/*   Updated: 2023/05/14 15:22:07 by yumamur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef STACKFT_H
-# define STACKFT_H
+#ifndef STACK_UTILS_H
+# define STACK_UTILS_H
 
-# include "memft.h"
-# include <unistd.h>
+# include "../def/typeft.h"
 
 # ifndef _STRUCT_STACK
 #  define _STRUCT_STACK
@@ -29,12 +28,9 @@ typedef struct s_stack
 }	t_stack;
 # endif /* _STRUCT_STACK */
 
-/* It is recommended to set _type parameter using 'sizeof()' macro.
- * */
-void	ft_stack_init(t_stack *pt, t_uint cap, t_ulong _type);
-void	ft_stack_xpanda(t_stack *pt_stack, t_uint n);
-void	ft_stack_push(t_stack *pt_stack, void *val);
-void	*ft_stack_pop(t_stack *pt_stack);
-void	ft_stack_clear(t_stack *pt_stack);
-
-#endif
+void	_update_index(t_stack *pt_stack);
+void	_stack_delone(t_stack *pt_stack);
+void	_stack_settype(t_stack *pt_stack, t_ulong _type);
+void	_stack_setcap(t_stack *pt_stack, t_uint cap);
+void	_stack_setsize(t_stack *pt_stack, t_uint size);
+#endif /* STACKFT_INTERNAL_H */

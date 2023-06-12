@@ -31,4 +31,4 @@ typedef const t_ushort		t_c_ushort;
 typedef const t_uint		t_c_uint;
 typedef const t_ulong		t_c_ulong;
 typedef const t_ulint		t_c_ulint;
-#endif
+#endif /* TYPEFT_H */

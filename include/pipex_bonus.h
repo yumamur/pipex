@@ -15,23 +15,24 @@
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 25
-# endif
+# endif /* BUFFER_SIZE */
 
-# include "shellft.h"
+# include "libft/shellft.h"
 # include <fcntl.h>
 # include <stdio.h>
 # include <string.h>
 # include <errno.h>
 # include <sys/wait.h>
 
+int			pipex_help(int argc, char *argv[]);
 void		exec(char cmd[], char *envp[], char **sub);
 void		if_exec(t_c_char *path, char **argcmd, char **envp);
 int			open_fd(char *file, int flags, t_uint mode, int offset);
-void		handle_error(char str[], t_uint mode);
+int			handle_error(char str[], t_uint mode);
 t_c_char	*get_path(char *cmd, char *envp[]);
 
 void		heredoc(int fds[], char *argv[], char *envp[], t_uint cmd_ct);
 void		heredoc_exec(char *envp[]);
 char		*get_next_line(int fd);
 
-#endif
+#endif /* PIPEX_BONUS_H */

@@ -13,16 +13,17 @@
 #ifndef PIPEX_H
 # define PIPEX_H
 
-# include "libft.h"
-# include "shellft.h"
+# include "libft/shellft.h"
 # include <fcntl.h>
 # include <stdio.h>
 # include <string.h>
 # include <errno.h>
+# include <sys/wait.h>
 
+int			pipex_help(void);
 int			open_fd(char *file, int flags, t_uint mode);
 void		handle_error(char str[]);
-const char	*get_path(char *cmd, char *envp[]);
-void		exec(char cmd[], char *envp[]);
+t_c_char	*get_path(char *cmd, char *envp[]);
+void		if_exec(t_c_char *path, char **argcmd, char **envp);
 
 #endif

@@ -12,17 +12,6 @@
 
 #include "../../include/pipex_bonus.h"
 
-void	if_exec(t_c_char *path, char **argcmd, char **envp)
-{
-	if (execve(path, argcmd, envp) == -1)
-	{
-		write(2, argcmd[0], ft_strlen(argcmd[0]));
-		ft_free_2pt(argcmd);
-		free((void *)path);
-		handle_error("\1", -1);
-	}
-}
-
 int	open_fd(char *file, int flags, t_uint mode, int offset)
 {
 	int		ret;
@@ -49,7 +38,7 @@ int	open_fd(char *file, int flags, t_uint mode, int offset)
 	return (ret);
 }
 
-void	handle_error(char errmsg[], t_uint mode)
+int	handle_error(char errmsg[], t_uint mode)
 {
 	if (errmsg[0] == 5)
 		write(2, "Insufficent argument. Required: \033[31;1m4\033[m", 44);
@@ -70,7 +59,7 @@ void	handle_error(char errmsg[], t_uint mode)
 	exit(127);
 }
 
-static void	add_cmd(t_c_char *allpaths[], char *cmd)
+static void	add_cmd(char *allpaths[], char *cmd)
 {
 	t_c_char	*tmp1;
 	t_c_char	*tmp2;
@@ -89,22 +78,23 @@ static void	add_cmd(t_c_char *allpaths[], char *cmd)
 
 t_c_char	*get_path(char *cmd, char *envp[])
 {
-	t_c_char	**allpaths;
-	t_c_char	*ret;
-	int			i;
+	char	**allpaths;
+	char	*ret;
+	int		i;
 
-	allpaths = (t_c_char **)ft_split(ft_getenv((t_c_char **)envp, "PATH"), ':');
+	allpaths = ft_split(ft_getenv((t_c_char **)envp, "PATH"), ':');
 	i = 0;
 	add_cmd(allpaths, cmd);
 	while (allpaths[i])
 	{
-		if (!access((t_c_char *)(allpaths[i]), F_OK))
+		if (!access((allpaths[i]), F_OK))
 		{
-			ret = (t_c_char *)ft_strdup(allpaths[i]);
+			ret = ft_strdup(allpaths[i]);
 			ft_free_2pt((char **)allpaths);
-			return (ret);
+			return ((t_c_char *)ret);
 		}
 		i++;
 	}
+	ft_free_2pt(allpaths);
 	return (NULL);
 }

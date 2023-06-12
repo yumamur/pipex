@@ -12,28 +12,38 @@
 
 #include "../../include/pipex_bonus.h"
 
+char	**split_cmd(char *cmd)
+{
+
+}
+
 void	exec(char *cmd, char *envp[], char **sub)
 {
 	char		**argcmd;
 	t_c_char	*path;
 
-	if (sub)
-		argcmd = sub;
-	else
-		argcmd = ft_split(cmd, 32);
+	argcmd = sub;
+	if (!argcmd)
+		argcmd = split_cmd(cmd);
+	if (!argcmd)
+		return ;
+	path = NULL;
 	if (!access(argcmd[0], X_OK))
 	{
 		path = ft_strdup(argcmd[0]);
 		ft_free_change((void **)&argcmd[0], ft_file_name((argcmd[0])));
-		if_exec(path, argcmd, envp);
+		execve(path, argcmd, envp);
 	}
 	else
 	{
 		path = get_path(argcmd[0], envp);
-		if_exec(path, argcmd, envp);
+		execve(path, argcmd, envp);
 	}
+	write(2, argcmd[0], ft_strlen(argcmd[0]));
 	ft_free_2pt(argcmd);
-	free((void *)path);
+	if (path)
+		free((void *)path);
+	handle_error("\1", -1);
 }
 
 void	pipe_heredoc(char *argv[], char *envp[], t_uint cmd_ct)
@@ -84,6 +94,7 @@ int	main(int argc, char *argv[], char *envp[])
 	int	fds[2];
 	int	c;
 
+	pipex_help(argc, argv);
 	if (argc < 5)
 		handle_error("\5", -1);
 	if (!ft_strcmp(argv[1], "here_doc"))

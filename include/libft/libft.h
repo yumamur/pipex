@@ -17,10 +17,6 @@
 # include <unistd.h>
 # include "memft.h"
 
-# ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 1024
-# endif
-
 /* STRUCTURE */
 typedef struct s_list
 {
@@ -75,7 +71,7 @@ void	ft_putchar_fd(int fd, char c);
 void	ft_putstr_fd(int fd, char *str);
 void	ft_putendl_fd(int fd, char *str);
 void	ft_putnbr_fd(int fd, int n);
-void	ft_putmem_fd(int fd, void *mem, size_t n, t_c_char *sep);
+void	ft_putmem_fd(int fd, const void *mem, size_t n, t_c_char *sep);
 
 /* LIST */
 int		ft_lstsize(t_list *lst);
@@ -95,4 +91,5 @@ t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 void	ft_free_pt(void *pt);
 void	ft_free_2pt(char **pt);
 void	ft_free_change(void **dest, void *src);
-#endif
+
+#endif /* LIBFT_H */

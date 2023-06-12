@@ -36,10 +36,9 @@ typedef struct s_cmdsub
 	struct s_quote	qt;
 	struct s_cmdsub	*next;
 }	t_cmdsub;
-# endif
+# endif /* SHELLFT_STRUCTS */
 
 char	*__set_return(t_cmdsub **cmd);
 int		__set_errno(t_cmdsub *cmd, int num);
 int		__cmdsub_init(t_cmdsub **pt, t_c_char *buf);
-
-#endif
+#endif /* CMDSUB_H */
