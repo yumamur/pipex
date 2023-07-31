@@ -39,20 +39,18 @@ bonus: $(SRC_BONUS) $(HELP_BONUS)
 clean:
 	@if [ -e $(NAME) ]; then \
 		$(RM) -rf $(NAME); \
-	elif [ -e ./include/libft ]; then \
+	fi \
+	if [ -e ./include/libft ]; then \
 		$(RM) -rf ./include/libft; \
-	else \
-		continue; \
 	fi
 	@make -sC $(LIBFT_DIR) clean
 
 fclean:
 	@if [ -e $(NAME) ]; then \
 		$(RM) -rf $(NAME); \
-	elif [ -e ./include/libft ]; then \
+	fi \
+	if [ -e ./include/libft ]; then \
 		$(RM) -rf ./include/libft; \
-	else \
-		continue; \
 	fi
 	@make -sC $(LIBFT_DIR) fclean
 
